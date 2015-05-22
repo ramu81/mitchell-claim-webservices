@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
-		xmlns:sws="http://www.springframework.org/schema/web-services"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
 							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 							http://www.springframework.org/schema/web-services
 							http://www.springframework.org/schema/web-services/web-services-2.0.xsd
 							http://www.springframework.org/schema/context
-							http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
+							http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          					http://www.springframework.org/schema/data/mongo
+          					http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
 	<context:component-scan base-package="com.mitchell.examples.claim.services" />
-	
+
 	<sws:annotation-driven />
 
-	<!--
-		Our test service bean
-	-->
+	<mongo:mongo host="uslmarakondapa1.us.deloitte.com" port="27017" />
+	<mongo:db-factory dbname="impact" />
 
-	<bean id="MitchellClaimService" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition" lazy-init="true">
-        <property name="schemaCollection">
-            <bean class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
-                <property name="inline" value="true" />
-                <property name="xsds">
-                    <list>
-                        <value>schemas/MitchellClaimServiceOperations.xsd</value>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="portTypeName" value="MitchellClaimService"/>
-        <property name="serviceName" value="MitchellClaimService" />
-        <property name="locationUri" value="/endpoints"/>
-    </bean>
-    
+	<!-- Our test service bean -->
+
+	<bean id="MitchellClaimService"
+		class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition"
+		lazy-init="true">
+		<property name="schemaCollection">
+			<bean
+				class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+				<property name="inline" value="true" />
+				<property name="xsds">
+					<list>
+						<value>schemas/MitchellClaimServiceOperations.xsd</value>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="portTypeName" value="MitchellClaimService" />
+		<property name="serviceName" value="MitchellClaimService" />
+		<property name="locationUri" value="/endpoints" />
+	</bean>
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+
 </beans>
