@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://com/mitchell/examples/claim/mitchellclaimservice"
+	xmlns:mitchellClaim="http://www.mitchell.com/examples/claim"
+	targetNamespace="http://com/mitchell/examples/claim/mitchellclaimservice"
+	elementFormDefault="qualified">
+	<xsd:import namespace="http://www.mitchell.com/examples/claim"
+		schemaLocation="MitchellClaim.xsd" />
+
+	<xsd:element name="MitchellClaimRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="MitchellClaim" type="mitchellClaim:MitchellClaimType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="MitchellClaimResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="MitchellClaim" type="mitchellClaim:MitchellClaimType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>
