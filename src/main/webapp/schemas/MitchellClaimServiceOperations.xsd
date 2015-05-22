@@ -7,7 +7,7 @@
 	<xsd:import namespace="http://www.mitchell.com/examples/claim"
 		schemaLocation="MitchellClaim.xsd" />
 
-	<xsd:element name="MitchellClaimRequest">
+	<xsd:element name="CreateClaimRequest">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="MitchellClaim" type="mitchellClaim:MitchellClaimType" />
@@ -15,10 +15,44 @@
 		</xsd:complexType>
 	</xsd:element>
 
-	<xsd:element name="MitchellClaimResponse">
+	<xsd:element name="ReadClaimRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ClaimNumber" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="UpdateClaimRequest">
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="MitchellClaim" type="mitchellClaim:MitchellClaimType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="ClaimResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ClaimResponse" type="mitchellClaim:MitchellClaimType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="DateRangeRequest">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="BeginDate" type="xsd:dateTime" />
+				<xsd:element name="EndDate" type="xsd:dateTime" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="ListOfClaims">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ListOfClaims" type="mitchellClaim:MitchellClaimType"
+					minOccurs="0" maxOccurs="unbounded" />
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
