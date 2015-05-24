@@ -12,12 +12,17 @@
           					http://www.springframework.org/schema/data/mongo
           					http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
 
+	<context:annotation-config />
 	<context:component-scan base-package="com.mitchell.examples.claim.services" />
 
 	<sws:annotation-driven />
 
-	<mongo:mongo host="uslmarakondapa1.us.deloitte.com" port="27017" />
-	<mongo:db-factory dbname="impact" />
+	<mongo:mongo host="localhost" port="27017" />
+	<mongo:db-factory dbname="demo" />
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
 
 	<!-- Our test service bean -->
 
@@ -38,10 +43,6 @@
 		<property name="portTypeName" value="MitchellClaimService" />
 		<property name="serviceName" value="MitchellClaimService" />
 		<property name="locationUri" value="/endpoints" />
-	</bean>
-
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 	</bean>
 
 </beans>
