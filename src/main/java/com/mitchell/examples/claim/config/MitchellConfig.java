@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
-import com.mitchell.examples.claim.services.dao.MitchellClaimRepository;
-import com.mitchell.examples.claim.util.MitchellUtil;
+import com.mitchell.examples.claim.mapper.CliamMapper;
+import com.mitchell.examples.claim.services.repo.MitchellClaimRepository;
 import com.mongodb.MongoClient;
 
 @Configuration
@@ -30,7 +30,7 @@ public class MitchellConfig {
 	}
 
 	public @Bean
-	MitchellUtil getMitchellUtil() {
-		return new MitchellUtil();
+	CliamMapper getCliamMapper() {
+		return new CliamMapper();
 	}
 }
