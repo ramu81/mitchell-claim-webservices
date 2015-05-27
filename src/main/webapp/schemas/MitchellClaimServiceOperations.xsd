@@ -15,6 +15,14 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:element name="CreateClaimResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="CreateClaimResponse" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
 	<xsd:element name="ReadClaimRequest">
 		<xsd:complexType>
 			<xsd:sequence>
@@ -31,6 +39,14 @@
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:element name="UpdateClaimResponse">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="UpdateClaimResponse" type="xsd:string" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
 	<xsd:element name="ClaimResponse">
 		<xsd:complexType>
 			<xsd:sequence>
@@ -42,7 +58,7 @@
 	<xsd:element name="DateRangeRequest">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="BeginDate" type="xsd:dateTime" />
+				<xsd:element name="StartDate" type="xsd:dateTime" />
 				<xsd:element name="EndDate" type="xsd:dateTime" />
 			</xsd:sequence>
 		</xsd:complexType>
