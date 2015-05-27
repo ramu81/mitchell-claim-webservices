@@ -71,6 +71,7 @@ public class CliamMapper {
 		}
 		return claimType;
 	}
+
 	/***
 	 * Copy properties from model to model
 	 * 
@@ -78,13 +79,15 @@ public class CliamMapper {
 	 * @param dest
 	 * @return
 	 */
-	public static MitchellClaim copyModelToModel(MitchellClaim source,
+	public MitchellClaim copyModelToModel(MitchellClaim source,
 			MitchellClaim dest) {
 		String[] ignorePro = MitchellUtil.getNullProperties(source);
 		BeanUtils.copyProperties(source, dest, ignorePro);
-		ignorePro = MitchellUtil.getNullProperties(source.getLossInfo());
-		BeanUtils.copyProperties(source.getLossInfo(), dest.getLossInfo(),
-				ignorePro);
+		if (source.getLossInfo() != null) {
+			ignorePro = MitchellUtil.getNullProperties(source.getLossInfo());
+			BeanUtils.copyProperties(source.getLossInfo(), dest.getLossInfo(),
+					ignorePro);
+		}
 		if (source.getVehicles() != null && dest.getVehicles() != null) {
 			List<VehicleInfo> sourceList = source.getVehicles()
 					.getVehicleDetails();

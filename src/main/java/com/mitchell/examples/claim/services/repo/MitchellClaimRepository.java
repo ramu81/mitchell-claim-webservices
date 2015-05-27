@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -24,8 +23,21 @@ public class MitchellClaimRepository {
 
 	private static final Logger logger = Logger
 			.getLogger(MitchellClaimRepository.class);
-	@Autowired
+	
 	private MongoTemplate mongoTemplate;
+
+	private CliamMapper cliamMapper;
+
+	public MitchellClaimRepository() {
+	}
+
+	public MitchellClaimRepository(CliamMapper cliamMapper,
+			MongoTemplate mongoTemplate) {
+		super();
+		this.cliamMapper = cliamMapper;
+		this.mongoTemplate = mongoTemplate;
+	}
+
 	public MitchellClaim findMitchellClaim(String claimNum)
 			throws MongoRepoException {
 		MitchellClaim claim = null;
@@ -78,7 +90,7 @@ public class MitchellClaimRepository {
 			String claimNum = source.getClaimNumber();
 			MitchellClaim dest = findMitchellClaim(claimNum);
 			if (dest != null) {
-				CliamMapper.copyModelToModel(source, dest);
+				cliamMapper.copyModelToModel(source, dest);
 				mongoTemplate.save(dest);
 			} else {
 				throw new MongoRepoException("Record is not updated...");
