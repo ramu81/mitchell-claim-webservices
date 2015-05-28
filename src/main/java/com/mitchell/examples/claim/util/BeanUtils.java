@@ -5,8 +5,12 @@ import java.util.Date;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.mitchell.examples.claim.CauseOfLossCode;
 import com.mitchell.examples.claim.MitchellClaimType;
+import com.mitchell.examples.claim.StatusCode;
+import com.mitchell.examples.claim.VehicleInfoType;
 import com.mitchell.examples.claim.services.repo.model.MitchellClaim;
+import com.mitchell.examples.claim.services.repo.model.VehicleInfo;
 
 public class BeanUtils {
 
@@ -15,57 +19,80 @@ public class BeanUtils {
 
 	public static void main(String[] args) throws NoSuchFieldException,
 			SecurityException {
-		copyProperties(new MitchellClaimType(), new MitchellClaim());
+		MitchellClaimType claimType = new MitchellClaimType();
+		claimType.setStatus(StatusCode.CLOSED);
+		;
+		;
+		System.out.println(copyProperties(claimType, new MitchellClaim()));
 	}
 
-	public static Object copyProperties(Object source, Object destination)
-			throws NoSuchFieldException, SecurityException {
-		Class<? extends Object> sClass = source.getClass();
-		Class<? extends Object> dClass = destination.getClass();
-		for (Field field : dClass.getFields()) {
+	public static Object copyProperties(Object source, Object destination) {
+		Class<? extends Object> sourceClass = source.getClass();
+		Class<? extends Object> destClass = destination.getClass();
+		for (Field field : destClass.getFields()) {
 			field.setAccessible(true);
 		}
-		for (Field field : sClass.getDeclaredFields()) {
+		for (Field sourceField : sourceClass.getDeclaredFields()) {
 			try {
-				if (!field.getName().equalsIgnoreCase("serialVersionUID")) {
-					field.setAccessible(true);
-					Class<?> class1 = field.getType();
-					Field field2 = dClass.getDeclaredField(field.getName());
-					Object value = field.get(source);;
-					field2.setAccessible(true);
-					
-					if (class1.equals(String.class)
-							|| class1.equals(Date.class)
-							|| class1.equals(Long.class)) {
-						
-						if (field.get(source) != null){
-							if(field2.getType().equals(javax.xml.datatype.XMLGregorianCalendar.class)){
-								Date date = (Date) value;field2.set(value, destination);
-							}else {
-							field2.set(value, destination);
+				if (!sourceField.getName().equalsIgnoreCase("serialVersionUID")) {
+					sourceField.setAccessible(true);
+					String sourceType = sourceField.getType().getName();
+					Field destFeild = destClass.getDeclaredField(sourceField
+							.getName());
+					String destType = destFeild.getType().getName();
+					Object value = sourceField.get(source);
+					destFeild.setAccessible(true);
+					if (sourceType.equals("java.lang.String")
+							|| sourceType.equals(Date.class.toString())
+							|| sourceType.equals("java.lang.Long")
+							|| sourceType.equals("java.lang.Integer")
+							|| sourceType.equals("int")) {
+
+						if (value != null) {
+							if (destType
+									.equals("javax.xml.datatype.XMLGregorianCalendar")) {
+								destFeild.set(destination, value);
+							} else if (destType
+									.equals("com.mitchell.examples.claim.StatusCode")) {
+								destFeild.set(destination,
+										StatusCode.fromValue(value.toString()));
+							} else if (destType
+									.equals("com.mitchell.examples.claim.CauseOfLossCode")) {
+								destFeild.set(destination, CauseOfLossCode
+										.fromValue(value.toString()));
+							} else if (destType.equals("java.lang.String")
+									|| destType.equals("java.lang.Integer")
+									|| destType.equals("int")) {
+								destFeild.set(destination, value);
 							}
 						}
-					} else if (class1
-							.equals(javax.xml.datatype.XMLGregorianCalendar.class)) {
-						if (field.get(source) != null){
-							XMLGregorianCalendar date = (XMLGregorianCalendar) value;
-							field2.set(date, destination);
-						}
-					} else if (class1
-							.equals(com.mitchell.examples.claim.CauseOfLossCode.class)) {
-						if (field.get(source) != null)
-							field2.set(field.get(source), destination);
-					} else if (class1
-							.equals(com.mitchell.examples.claim.StatusCode.class)) {
-						if (field.get(source) != null)
-							field2.set(field.get(source), destination);
+					} else if (sourceType
+							.equals("javax.xml.datatype.XMLGregorianCalendar")) {
+						if (sourceField.get(source) != null)
+							destFeild.set(destination, MitchellUtil
+									.toDate((XMLGregorianCalendar) value));
+
+					} else if (sourceType
+							.equals("com.mitchell.examples.claim.CauseOfLossCode")) {
+						if (sourceField.get(source) != null)
+							destFeild.set(destination, sourceField.get(source)
+									.toString());
+					} else if (sourceType
+							.equals("com.mitchell.examples.claim.StatusCode")) {
+						if (sourceField.get(source) != null)
+							destFeild.set(destination, sourceField.get(source)
+									.toString());
 					} else {
-						System.out.println(class1);
+						System.out.println(sourceType);
 					}
 				}
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
 				e.printStackTrace();
 			}
 		}
