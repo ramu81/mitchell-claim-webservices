@@ -3,20 +3,16 @@ package com.mitchell.examples.claim.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Configuration;
 
-import com.mitchell.examples.claim.CauseOfLossCode;
 import com.mitchell.examples.claim.LossInfoType;
 import com.mitchell.examples.claim.MitchellClaimType;
-import com.mitchell.examples.claim.StatusCode;
 import com.mitchell.examples.claim.VehicleInfoType;
 import com.mitchell.examples.claim.VehicleListType;
 import com.mitchell.examples.claim.services.repo.model.LossInfo;
 import com.mitchell.examples.claim.services.repo.model.MitchellClaim;
 import com.mitchell.examples.claim.services.repo.model.VehicleInfo;
 import com.mitchell.examples.claim.services.repo.model.VehicleList;
-import com.mitchell.examples.claim.util.MitchellUtil;
 
 /***
  * 
@@ -67,13 +63,11 @@ public class CliamMapper {
 	 */
 	public MitchellClaim copyModelToModel(MitchellClaim source,
 			MitchellClaim dest) {
-		String[] ignorePro = MitchellUtil.getNullProperties(source);
-		BeanUtils.copyProperties(source, dest, ignorePro);
-		if (source.getLossInfo() != null) {
-			ignorePro = MitchellUtil.getNullProperties(source.getLossInfo());
-			BeanUtils.copyProperties(source.getLossInfo(), dest.getLossInfo(),
-					ignorePro);
-		}
+		com.mitchell.examples.claim.util.BeanUtils.copyProperties(source, dest);
+		if (source.getLossInfo() != null)
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
+					source.getLossInfo(), dest.getLossInfo());
+
 		if (source.getVehicles() != null && dest.getVehicles() != null) {
 			List<VehicleInfo> sourceList = source.getVehicles()
 					.getVehicleDetails();
@@ -81,14 +75,12 @@ public class CliamMapper {
 			for (VehicleInfo sourcrInfo : sourceList) {
 				for (VehicleInfo destInfo : destList) {
 					if (destInfo.getVin().equalsIgnoreCase(sourcrInfo.getVin())) {
-						ignorePro = MitchellUtil.getNullProperties(sourcrInfo);
-						BeanUtils.copyProperties(sourcrInfo, destInfo,
-								ignorePro);
+						com.mitchell.examples.claim.util.BeanUtils
+								.copyProperties(sourcrInfo, destInfo);
 					} else {
 						destInfo = new VehicleInfo();
-						ignorePro = MitchellUtil.getNullProperties(sourcrInfo);
-						BeanUtils.copyProperties(sourcrInfo, destInfo,
-								ignorePro);
+						com.mitchell.examples.claim.util.BeanUtils
+								.copyProperties(sourcrInfo, destInfo);
 					}
 				}
 			}
@@ -97,8 +89,8 @@ public class CliamMapper {
 					.getVehicleDetails();
 			for (VehicleInfo sourcrInfo : sourceList) {
 				VehicleInfo destInfo = new VehicleInfo();
-				ignorePro = MitchellUtil.getNullProperties(sourcrInfo);
-				BeanUtils.copyProperties(sourcrInfo, destInfo, ignorePro);
+				com.mitchell.examples.claim.util.BeanUtils.copyProperties(
+						sourcrInfo, destInfo);
 			}
 
 		}
@@ -168,15 +160,8 @@ public class CliamMapper {
 		LossInfoType infoType = null;
 		if (info != null) {
 			infoType = new LossInfoType();
-			try {
-				infoType.setCauseOfLoss(CauseOfLossCode.fromValue(info
-						.getCauseOfLoss()));
-			} catch (IllegalArgumentException e) {
-				infoType.setCauseOfLoss(null);
-			}
-			infoType.setLossDescription(info.getLossDescription());
-			infoType.setReportedDate(MitchellUtil.toXMLGregorianCalendar(info
-					.getReportedDate()));
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(info,
+					infoType);
 		}
 		return infoType;
 	}
@@ -214,19 +199,8 @@ public class CliamMapper {
 		VehicleInfoType vehicleInfoType = null;
 		if (vehicleInfo != null) {
 			vehicleInfoType = new VehicleInfoType();
-			vehicleInfoType.setVin(vehicleInfo.getVin());
-			vehicleInfoType.setDamageDescription(vehicleInfo
-					.getDamageDescription());
-			vehicleInfoType.setEngineDescription(vehicleInfo
-					.getEngineDescription());
-			vehicleInfoType.setExteriorColor(vehicleInfo.getExteriorColor());
-			vehicleInfoType.setLicPlate(vehicleInfo.getLicPlate());
-			vehicleInfoType
-					.setMakeDescription(vehicleInfo.getMakeDescription());
-			vehicleInfoType.setMileage(vehicleInfo.getMileage());
-			vehicleInfoType.setModelDescription(vehicleInfo
-					.getModelDescription());
-			vehicleInfoType.setModelYear(vehicleInfo.getModelYear());
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
+					vehicleInfo, vehicleInfoType);
 		}
 		return vehicleInfoType;
 	}
