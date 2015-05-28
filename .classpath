@@ -35,7 +35,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/4.0.0.RC2/spring-tx-4.0.0.RC2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/data/spring-data-commons-core/1.2.1.RELEASE/spring-data-commons-core-1.2.1.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.5.10/slf4j-api-1.5.10.jar"/>
-	<classpathentry kind="lib" path="C:/softwares/eclipse/plugins/org.apache.commons.logging_1.1.1.v201101211721.jar"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
