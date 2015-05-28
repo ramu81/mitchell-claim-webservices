@@ -33,13 +33,8 @@ public class CliamMapper {
 	 */
 	public MitchellClaim copyClaimToModel(MitchellClaimType claimType) {
 		MitchellClaim claim = new MitchellClaim();
-		claim.setClaimNumber(claimType.getClaimNumber());
-		claim.setClaimantFirstName(claimType.getClaimantFirstName());
-		claim.setClaimantLastName(claimType.getClaimantLastName());
-		claim.setAssignedAdjusterID(claimType.getAssignedAdjusterID());
-		claim.setLossDate(MitchellUtil.toDate(claimType.getLossDate()));
-		if (claimType.getStatus() != null)
-			claim.setStatus(claimType.getStatus().toString());
+		com.mitchell.examples.claim.util.BeanUtils.copyProperties(claimType,
+				claim);
 		claim.setVehicles(getVehicleList(claimType.getVehicles()));
 		claim.setLossInfo(getLossInfo(claimType.getLossInfo()));
 		return claim;
@@ -55,17 +50,8 @@ public class CliamMapper {
 		MitchellClaimType claimType = null;
 		if (claim != null) {
 			claimType = new MitchellClaimType();
-			claimType.setAssignedAdjusterID(claim.getAssignedAdjusterID());
-			claimType.setClaimantFirstName(claim.getClaimantFirstName());
-			claimType.setClaimantLastName(claim.getClaimantLastName());
-			claimType.setClaimNumber(claim.getClaimNumber());
-			claimType.setLossDate(MitchellUtil.toXMLGregorianCalendar(claim
-					.getLossDate()));
-			if (claim.getStatus() != null) {
-				claimType.setStatus(StatusCode.fromValue(claim.getStatus()));
-			} else {
-				claimType.setStatus(null);
-			}
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(claim,
+					claimType);
 			claimType.setLossInfo(getLossInfoType(claim.getLossInfo()));
 			claimType.setVehicles(getVehicleDetails(claim.getVehicles()));
 		}
@@ -130,11 +116,8 @@ public class CliamMapper {
 		LossInfo info = null;
 		if (lossInfoType != null) {
 			info = new LossInfo();
-			if (lossInfoType.getCauseOfLoss() != null)
-				info.setCauseOfLoss(lossInfoType.getCauseOfLoss().toString());
-			info.setLossDescription(lossInfoType.getLossDescription());
-			info.setReportedDate(MitchellUtil.toDate(lossInfoType
-					.getReportedDate()));
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
+					lossInfoType, info);
 		}
 		return info;
 	}
@@ -169,15 +152,8 @@ public class CliamMapper {
 		VehicleInfo info = null;
 		if (vehicleInfoType != null) {
 			info = new VehicleInfo();
-			info.setVin(vehicleInfoType.getVin());
-			info.setDamageDescription(vehicleInfoType.getDamageDescription());
-			info.setEngineDescription(vehicleInfoType.getEngineDescription());
-			info.setExteriorColor(vehicleInfoType.getExteriorColor());
-			info.setLicPlate(vehicleInfoType.getLicPlate());
-			info.setMakeDescription(vehicleInfoType.getMakeDescription());
-			info.setMileage(vehicleInfoType.getMileage());
-			info.setModelDescription(vehicleInfoType.getModelDescription());
-			info.setModelYear(vehicleInfoType.getModelYear());
+			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
+					vehicleInfoType, info);
 		}
 		return info;
 	}

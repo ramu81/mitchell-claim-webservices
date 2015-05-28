@@ -23,7 +23,7 @@ public class MitchellClaimRepository {
 
 	private static final Logger logger = Logger
 			.getLogger(MitchellClaimRepository.class);
-	
+
 	private MongoTemplate mongoTemplate;
 
 	private CliamMapper cliamMapper;
@@ -87,6 +87,7 @@ public class MitchellClaimRepository {
 	public void updateMitchellClaim(MitchellClaim source)
 			throws MongoRepoException {
 		try {
+			System.out.println(source);
 			String claimNum = source.getClaimNumber();
 			MitchellClaim dest = findMitchellClaim(claimNum);
 			if (dest != null) {
