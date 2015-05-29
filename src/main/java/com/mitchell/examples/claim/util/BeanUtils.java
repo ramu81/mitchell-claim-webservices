@@ -1,11 +1,14 @@
 package com.mitchell.examples.claim.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.mitchell.examples.claim.CauseOfLossCode;
+import com.mitchell.examples.claim.CommonConstants;
 import com.mitchell.examples.claim.LossInfoType;
 import com.mitchell.examples.claim.StatusCode;
 import com.mitchell.examples.claim.services.repo.model.LossInfo;
@@ -15,10 +18,9 @@ public class BeanUtils {
 	public BeanUtils() {
 	}
 
-	public static void main(String[] args) throws NoSuchFieldException,
-			SecurityException {
+	public static void main(String[] args) {
 		LossInfoType claimType = new LossInfoType();
-		claimType.setCauseOfLoss(CauseOfLossCode.EXPLOSION);;
+		claimType.setCauseOfLoss(CauseOfLossCode.COLLISION);
 		System.out.println(copyProperties(claimType, new LossInfo()));
 	}
 
@@ -30,7 +32,8 @@ public class BeanUtils {
 		}
 		for (Field sourceField : sourceClass.getDeclaredFields()) {
 			try {
-				if (!sourceField.getName().equalsIgnoreCase("serialVersionUID")) {
+				if (!sourceField.getName().equalsIgnoreCase(
+						CommonConstants.S_ID)) {
 					sourceField.setAccessible(true);
 					String sourceType = sourceField.getType().getName();
 					Field destFeild = destClass.getDeclaredField(sourceField
@@ -39,43 +42,38 @@ public class BeanUtils {
 					Object value = sourceField.get(source);
 					destFeild.setAccessible(true);
 					if (value != null) {
-						if (sourceType.equals("java.lang.String")
-								|| sourceType.equals("java.lang.Long")
-								|| sourceType.equals("java.lang.Integer")
-								|| sourceType.equals("java.util.Date")
-								|| sourceType.equals("int")) {
+						if (sourceType.equals(CommonConstants.STRING)
+								|| sourceType.equals(CommonConstants.LONG)
+								|| sourceType.equals(CommonConstants.INTEGER)
+								|| sourceType.equals(CommonConstants.DATE)
+								|| sourceType.equals(CommonConstants.INT)) {
 
-							if (destType
-									.equals("javax.xml.datatype.XMLGregorianCalendar")) {
+							if (destType.equals(CommonConstants.XML_DATE)) {
 								destFeild.set(destination, MitchellUtil
 										.toXMLGregorianCalendar((Date) value));
 							} else if (destType
-									.equals("com.mitchell.examples.claim.StatusCode")) {
+									.equals(CommonConstants.STATUS_CODE)) {
 								destFeild.set(destination,
 										StatusCode.fromValue(value.toString()));
 							} else if (destType
-									.equals("com.mitchell.examples.claim.CauseOfLossCode")) {
+									.equals(CommonConstants.CAUSE_CODE)) {
 								destFeild.set(destination, CauseOfLossCode
 										.fromValue(value.toString()));
 								System.out.println(destFeild.get(destination));
-							} else if (destType.equals("java.lang.String")
-									|| destType.equals("java.lang.Integer")
-									|| destType.equals("int")) {
+							} else if (destType.equals(CommonConstants.STRING)
+									|| destType.equals(CommonConstants.INTEGER)
+									|| destType.equals(CommonConstants.INT)) {
 								destFeild.set(destination, value);
 							}
-						} else if (sourceType
-								.equals("javax.xml.datatype.XMLGregorianCalendar")) {
+						} else if (sourceType.equals(CommonConstants.XML_DATE)) {
 							destFeild.set(destination, MitchellUtil
 									.toDate((XMLGregorianCalendar) value));
 
-						} else if (sourceType
-								.equals("com.mitchell.examples.claim.CauseOfLossCode")) {
-							destFeild.set(destination,((CauseOfLossCode) value).value());
-						} else if (sourceType
-								.equals("com.mitchell.examples.claim.StatusCode")) {
-							destFeild.set(destination,((StatusCode) value).value());
-						} else {
-							System.out.println(sourceField.getType());
+						} else if (sourceField.getType().isEnum()) {
+							Class<?> enumClazz = sourceField.getType();
+							Method m = enumClazz.getMethod("value", null);
+							destFeild.set(destination, value.toString());
+							System.out.println(value);
 						}
 					}
 				}
@@ -86,6 +84,8 @@ public class BeanUtils {
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
 			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
 			}
 		}
