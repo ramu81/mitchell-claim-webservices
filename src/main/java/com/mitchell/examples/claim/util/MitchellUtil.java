@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.mitchell.examples.claim.constants.CommonConstants;
+
 public class MitchellUtil {
 
 	private static final Logger logger = Logger.getLogger(MitchellUtil.class);
@@ -86,4 +88,76 @@ public class MitchellUtil {
 		return calendar.toGregorianCalendar().getTime();
 	}
 
+	/**
+	 * This method is used for to get enum string based on it's enum code
+	 * 
+	 * @param <T>
+	 * @param clazz
+	 * @param t
+	 * @return
+	 */
+	public static <T extends Enum<T>> String getEnumStrVal(Class<T> clazz,
+			Enum<T> t) {
+
+		if (t == null || t.toString().equalsIgnoreCase(CommonConstants.NULL))
+			return null;
+
+		String enumStr = null;
+		T tempT = findEnumConstant(clazz, t.toString());
+
+		if (tempT != null) {
+			enumStr = tempT.toString();
+		} else {
+			logger.error("NFUtil : getEnumStrVal : No Enum is found for code :"
+					+ t);
+		}
+
+		return enumStr;
+	}
+
+	/**
+	 * This method is used for to get enum code based on the string
+	 * 
+	 * @param <T>
+	 * @param clazz
+	 * @param s
+	 * @return
+	 */
+	public static <T extends Enum<T>> T getEnumCode(Class<T> clazz, String s) {
+
+		T t = null;
+
+		if (s == null || s.isEmpty())
+			s = CommonConstants.NULL;
+
+		t = findEnumConstant(clazz, s);
+
+		if (t == null && s != CommonConstants.NULL) {
+			logger.error("NFUtil : getEnumCode : No Enum is found for code :"
+					+ s);
+			t = findEnumConstant(clazz, CommonConstants.NULL);
+		}
+
+		return t;
+	}
+
+	/**
+	 * This method is used to find a value in enum
+	 * 
+	 * @param <T>
+	 * @param clazz
+	 * @param s
+	 * @return
+	 */
+	private static <T extends Enum<T>> T findEnumConstant(Class<T> clazz,
+			String s) {
+		T t = null;
+		for (T e : clazz.getEnumConstants()) {
+			if (e.toString().equalsIgnoreCase(s)) {
+				t = e;
+				break;
+			}
+		}
+		return t;
+	}
 }
