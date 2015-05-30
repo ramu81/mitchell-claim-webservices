@@ -3,8 +3,6 @@ package com.mitchell.examples.claim.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Configuration;
-
 import com.mitchell.examples.claim.LossInfoType;
 import com.mitchell.examples.claim.MitchellClaimType;
 import com.mitchell.examples.claim.VehicleInfoType;
@@ -13,13 +11,13 @@ import com.mitchell.examples.claim.services.repo.model.LossInfo;
 import com.mitchell.examples.claim.services.repo.model.MitchellClaim;
 import com.mitchell.examples.claim.services.repo.model.VehicleInfo;
 import com.mitchell.examples.claim.services.repo.model.VehicleList;
+import com.mitchell.examples.claim.util.BeanUtils;
 
 /***
  * 
  * @author Ram Kondapalli
  * 
  */
-@Configuration
 public class CliamMapper {
 	/**
 	 * Convert MitchellClaimType to MitchellClaim
@@ -29,8 +27,7 @@ public class CliamMapper {
 	 */
 	public MitchellClaim copyClaimToModel(MitchellClaimType claimType) {
 		MitchellClaim claim = new MitchellClaim();
-		com.mitchell.examples.claim.util.BeanUtils.copyProperties(claimType,
-				claim);
+		BeanUtils.copyProperties(claimType, claim);
 		claim.setVehicles(getVehicleList(claimType.getVehicles()));
 		claim.setLossInfo(getLossInfo(claimType.getLossInfo()));
 		return claim;
@@ -46,8 +43,7 @@ public class CliamMapper {
 		MitchellClaimType claimType = null;
 		if (claim != null) {
 			claimType = new MitchellClaimType();
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(claim,
-					claimType);
+			BeanUtils.copyProperties(claim, claimType);
 			claimType.setLossInfo(getLossInfoType(claim.getLossInfo()));
 			claimType.setVehicles(getVehicleDetails(claim.getVehicles()));
 		}
@@ -63,39 +59,28 @@ public class CliamMapper {
 	 */
 	public MitchellClaim copyModelToModel(MitchellClaim source,
 			MitchellClaim dest) {
-		com.mitchell.examples.claim.util.BeanUtils.copyProperties(source, dest);
+		BeanUtils.copyProperties(source, dest);
 		if (source.getLossInfo() != null)
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
-					source.getLossInfo(), dest.getLossInfo());
-
+			BeanUtils.copyProperties(source.getLossInfo(), dest.getLossInfo());
 		if (source.getVehicles() != null && dest.getVehicles() != null) {
 			List<VehicleInfo> sourceList = source.getVehicles()
 					.getVehicleDetails();
 			List<VehicleInfo> destList = dest.getVehicles().getVehicleDetails();
 			for (VehicleInfo sourcrInfo : sourceList) {
+				boolean flag = false;
 				for (VehicleInfo destInfo : destList) {
 					if (destInfo.getVin().equalsIgnoreCase(sourcrInfo.getVin())) {
-						com.mitchell.examples.claim.util.BeanUtils
-								.copyProperties(sourcrInfo, destInfo);
-					} else {
-						destInfo = new VehicleInfo();
-						com.mitchell.examples.claim.util.BeanUtils
-								.copyProperties(sourcrInfo, destInfo);
+						flag = true;
+						BeanUtils.copyProperties(sourcrInfo, destInfo);
 					}
 				}
+				if (!flag)
+					destList.add(sourcrInfo);
 			}
 		} else if (source.getVehicles() != null && dest.getVehicles() == null) {
-			List<VehicleInfo> sourceList = source.getVehicles()
-					.getVehicleDetails();
-			for (VehicleInfo sourcrInfo : sourceList) {
-				VehicleInfo destInfo = new VehicleInfo();
-				com.mitchell.examples.claim.util.BeanUtils.copyProperties(
-						sourcrInfo, destInfo);
-			}
-
+			dest.setVehicles(source.getVehicles());
 		}
 		return dest;
-
 	}
 
 	/***
@@ -108,8 +93,7 @@ public class CliamMapper {
 		LossInfo info = null;
 		if (lossInfoType != null) {
 			info = new LossInfo();
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
-					lossInfoType, info);
+			BeanUtils.copyProperties(lossInfoType, info);
 		}
 		return info;
 	}
@@ -144,8 +128,7 @@ public class CliamMapper {
 		VehicleInfo info = null;
 		if (vehicleInfoType != null) {
 			info = new VehicleInfo();
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
-					vehicleInfoType, info);
+			BeanUtils.copyProperties(vehicleInfoType, info);
 		}
 		return info;
 	}
@@ -160,8 +143,7 @@ public class CliamMapper {
 		LossInfoType infoType = null;
 		if (info != null) {
 			infoType = new LossInfoType();
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(info,
-					infoType);
+			BeanUtils.copyProperties(info, infoType);
 		}
 		return infoType;
 	}
@@ -199,8 +181,7 @@ public class CliamMapper {
 		VehicleInfoType vehicleInfoType = null;
 		if (vehicleInfo != null) {
 			vehicleInfoType = new VehicleInfoType();
-			com.mitchell.examples.claim.util.BeanUtils.copyProperties(
-					vehicleInfo, vehicleInfoType);
+			BeanUtils.copyProperties(vehicleInfo, vehicleInfoType);
 		}
 		return vehicleInfoType;
 	}

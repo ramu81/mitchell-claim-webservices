@@ -22,14 +22,23 @@ import com.mitchell.examples.claim.services.repo.MitchellClaimRepository;
 import com.mitchell.examples.claim.services.repo.model.MitchellClaim;
 import com.mitchell.examples.claim.util.MitchellUtil;
 
+/***
+ * 
+ * @author Ram Kondapalli
+ * 
+ */
 @Service
 public class MitchellClaimServiceImpl implements MitchellClaimService {
+
 	private ApplicationContext ctx = new AnnotationConfigApplicationContext(
 			MitchellConfig.class);
+
 	private static final Logger logger = Logger
 			.getLogger(MitchellClaimServiceImpl.class);
+
 	private MitchellClaimRepository mitchellClaimRepo = ctx
 			.getBean(MitchellClaimRepository.class);
+
 	private CliamMapper mapper = ctx.getBean(CliamMapper.class);
 
 	public void createClaim(CreateClaimRequest req) throws ServiceException {
@@ -43,12 +52,10 @@ public class MitchellClaimServiceImpl implements MitchellClaimService {
 				throw new ServiceException("Null Request");
 			}
 		} catch (MongoRepoException e) {
-			logger.error("Method  : findMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
 			throw new ServiceException(e);
 		} catch (Exception e) {
 			logger.error("Method  : findMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			throw new ServiceException(e);
 		}
 		logger.debug(" End createClaim  ");
@@ -65,14 +72,10 @@ public class MitchellClaimServiceImpl implements MitchellClaimService {
 				throw new ServiceException("Null Request");
 			}
 		} catch (MongoRepoException e) {
-			logger.error("Method  : updateClaim() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
-			e.printStackTrace();
 			throw new ServiceException(e);
 		} catch (Exception e) {
 			logger.error("Method  : updateClaim() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
-			e.printStackTrace();
+					+ " StackTrace : " + e.getStackTrace());
 			throw new ServiceException(e);
 		}
 		logger.debug(" End updateClaim...    ");
@@ -92,14 +95,11 @@ public class MitchellClaimServiceImpl implements MitchellClaimService {
 				throw new ServiceException("Null Request");
 			}
 		} catch (MongoRepoException e) {
-			logger.error("Method  : readClaim() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
-			e.printStackTrace();
 			throw new ServiceException(e);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Method  : readClaim() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
+					+ " StackTrace : " + e.getStackTrace());
 			throw new ServiceException(e);
 		}
 		logger.debug(" End readClaim  MitchellClaimType ====>  " + claimType);
@@ -118,7 +118,8 @@ public class MitchellClaimServiceImpl implements MitchellClaimService {
 						+ " endDate " + endDate);
 				List<MitchellClaim> mitchellClaims = mitchellClaimRepo
 						.getMitchellClaimList(startDate, endDate);
-				logger.info(" Method : getClaimList() :  mitchellClaims  :  " + mitchellClaims);
+				logger.info(" Method : getClaimList() :  mitchellClaims  :  "
+						+ mitchellClaims);
 				if (mitchellClaims != null) {
 					listOfClaims = new ArrayList<MitchellClaimType>();
 					for (MitchellClaim mitchellClaim : mitchellClaims) {
@@ -131,12 +132,10 @@ public class MitchellClaimServiceImpl implements MitchellClaimService {
 				throw new ServiceException("Null Request");
 			}
 		} catch (MongoRepoException e) {
-			logger.error("Method  : getClaimList() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
 			throw new ServiceException(e);
 		} catch (Exception e) {
 			logger.error("Method  : getClaimList() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
+					+ " StackTrace : " + e.getStackTrace());
 			throw new ServiceException(e);
 		}
 		return listOfClaims;

@@ -23,9 +23,12 @@ import com.mitchell.examples.claim.services.MitchellClaimService;
 
 @Endpoint
 public class MitchellClaimServiceEndpoint {
+
 	private static final String TARGET_NAMESPACE = "http://com/mitchell/examples/claim/mitchellclaimservice";
+
 	@Autowired
 	MitchellClaimService mitchellClaimService;
+
 	private static final Logger logger = Logger
 			.getLogger(MitchellClaimServiceEndpoint.class);
 
@@ -39,9 +42,8 @@ public class MitchellClaimServiceEndpoint {
 		} catch (ServiceException e) {
 			claimResponse.setCreateClaimResponse(e.getLocalizedMessage());
 			logger.error("Method  : createClaim() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
+					+ " StackTrace : " + e.getStackTrace());
 		}
-
 		return claimResponse;
 	}
 
@@ -55,9 +57,8 @@ public class MitchellClaimServiceEndpoint {
 		} catch (ServiceException e) {
 			updateClaimResponse.setUpdateClaimResponse("Update failed");
 			logger.error("Method  : UpdateClaimRequest() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 		}
-
 		return updateClaimResponse;
 	}
 
@@ -73,10 +74,8 @@ public class MitchellClaimServiceEndpoint {
 				claimResponse.setClaimResponse(claimType);
 			} catch (ServiceException e) {
 				logger.error("Method  : readClaim() Message : "
-						+ e.getMessage() + " Cause : " + e.getCause());
-				e.printStackTrace();
+						+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			}
-
 		}
 		return claimResponse;
 	}
@@ -93,15 +92,16 @@ public class MitchellClaimServiceEndpoint {
 				claimResponse.getListOfClaims().addAll(claimType);
 			} catch (ServiceException e) {
 				logger.error("Method  : getListOfClaims() Message : "
-						+ e.getMessage() + " Cause : " + e.getCause());
+						+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			}
 
 		}
 		return claimResponse;
 	}
 
-	public void setMitchellClaimService_i(
-			MitchellClaimService mitchellClaimService_i) {
-		this.mitchellClaimService = mitchellClaimService_i;
+	public void setMitchellClaimService(
+			MitchellClaimService mitchellClaimService) {
+		this.mitchellClaimService = mitchellClaimService;
 	}
+
 }

@@ -47,7 +47,7 @@ public class MitchellClaimRepository {
 			claim = mongoTemplate.findOne(query, MitchellClaim.class);
 		} catch (Exception e) {
 			logger.error("Method  : findMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			throw new MongoRepoException(e.getLocalizedMessage());
 		}
 		return claim;
@@ -60,11 +60,10 @@ public class MitchellClaimRepository {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("lossDate").gte(startDate)
 					.lt(endDate));
-			logger.info(" Query ===== > " + query);
 			claims = mongoTemplate.find(query, MitchellClaim.class);
 		} catch (Exception e) {
 			logger.error("Method  : findMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			throw new MongoRepoException(e);
 		}
 		return claims;
@@ -78,7 +77,7 @@ public class MitchellClaimRepository {
 			flag = true;
 		} catch (Exception e) {
 			logger.error("Method  : insertMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			throw new MongoRepoException(e);
 		}
 		return flag;
@@ -87,7 +86,6 @@ public class MitchellClaimRepository {
 	public void updateMitchellClaim(MitchellClaim source)
 			throws MongoRepoException {
 		try {
-			System.out.println(source);
 			String claimNum = source.getClaimNumber();
 			MitchellClaim dest = findMitchellClaim(claimNum);
 			if (dest != null) {
@@ -98,8 +96,7 @@ public class MitchellClaimRepository {
 			}
 		} catch (Exception e) {
 			logger.error("Method  : updateMitchellClaim() Message : "
-					+ e.getMessage() + " Cause : " + e.getCause());
-			e.printStackTrace();
+					+ e.getMessage() + " StackTrace : " + e.getStackTrace());
 			throw new MongoRepoException(e);
 		}
 	}
@@ -115,7 +112,7 @@ public class MitchellClaimRepository {
 			}
 		} catch (Exception e) {
 			logger.error("Method  : init() Message : " + e.getMessage()
-					+ " Cause : " + e.getCause());
+					+ " StackTrace : " + e.getStackTrace());
 		}
 	}
 

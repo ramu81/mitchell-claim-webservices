@@ -1,6 +1,8 @@
 package com.mitchell.examples.claim.constants;
 
 public interface CommonConstants {
+	String DATABASE_NAME= "MitchellDB";
+	String INIT = "init";
 	String NULL = "NULL";
 	String STRING = "java.lang.String";
 	String INT = "int";

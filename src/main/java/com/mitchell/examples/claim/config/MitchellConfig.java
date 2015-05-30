@@ -7,24 +7,34 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
+import com.mitchell.examples.claim.constants.CommonConstants;
 import com.mitchell.examples.claim.mapper.CliamMapper;
 import com.mitchell.examples.claim.services.repo.MitchellClaimRepository;
 import com.mongodb.MongoClient;
 
+/***
+ * 
+ * @author Ram Kondapalli
+ * 
+ */
 @Configuration
 public class MitchellConfig {
+
 	private static final Logger logger = Logger.getLogger(MitchellConfig.class);
 
-	public @Bean MongoDbFactory mongoDbFactory() throws Exception {
-		return new SimpleMongoDbFactory(new MongoClient(), "demo");
+	public @Bean
+	MongoDbFactory mongoDbFactory() throws Exception {
+		return new SimpleMongoDbFactory(new MongoClient(),
+				CommonConstants.DATABASE_NAME);
 	}
 
-	public @Bean MongoTemplate mongoTemplate() throws Exception {
+	public @Bean
+	MongoTemplate mongoTemplate() throws Exception {
 		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
 		return mongoTemplate;
 	}
 
-	@Bean(initMethod = "init")
+	@Bean(initMethod = CommonConstants.INIT)
 	public MitchellClaimRepository getMitchellClaimRepo() {
 		MongoTemplate mongoTemplate = null;
 		try {
@@ -35,7 +45,8 @@ public class MitchellConfig {
 		return new MitchellClaimRepository(cliamMapper(), mongoTemplate);
 	}
 
-	public @Bean CliamMapper cliamMapper() {
+	public @Bean
+	CliamMapper cliamMapper() {
 		return new CliamMapper();
 	}
 }
