@@ -14,7 +14,7 @@ import com.mitchell.examples.claim.mapper.CliamMapper;
 import com.mitchell.examples.claim.services.repo.model.MitchellClaim;
 
 /**
- * Repository for {@link Person}s
+ * Repository for {@link MitchellClaim}s
  * 
  * @author Ram Kondapalli
  */
