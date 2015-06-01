@@ -40,14 +40,16 @@ public class BeanUtils {
 								|| sourceType.equals(CommonConstants.LONG)
 								|| sourceType.equals(CommonConstants.INTEGER)
 								|| sourceType.equals(CommonConstants.DATE)
-								|| sourceType.equals(CommonConstants.INT)) {
+								|| sourceField.getType().isPrimitive()) {
 
 							if (destType.equals(CommonConstants.XML_DATE)) {
 								destFeild.set(destination, MitchellUtil
 										.toXMLGregorianCalendar((Date) value));
 							} else if (destType.equals(CommonConstants.STRING)
 									|| destType.equals(CommonConstants.INTEGER)
-									|| destType.equals(CommonConstants.INT)) {
+									|| destType.equals(CommonConstants.LONG)
+									|| destType.equals(CommonConstants.DATE)
+									|| sourceField.getType().isPrimitive()) {
 								destFeild.set(destination, value);
 							} else if (destFeild.getType().isEnum()) {
 								if (destType
